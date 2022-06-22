@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: api-gateway
+
+
+  cloud:
+    gateway:
+      routes:
+        - id: product
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/product/**
+        - id: category
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/category/**
+        - id: user
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/user/**
+        - id: notification
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/notification/**
+        - id: order
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/order/**
+        - id: session
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/session/**
+        - id: session
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/cart/**
+        - id: swagger
+          uri: http://localhost:9090
+          predicates:
+            - Path=/swagger-ui/**
+  sleuth:
+    sampler:
+      probability: 1.0
+
+server:
+  port: 9090
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    preferIpAddress: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+

@@ -1,0 +1,31 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: user
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user
+    username: postgres
+    password: 84310108
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show-sql: true
+    generate-ddl: true
+  rabbitmq:
+    addresses: localhost:5672
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

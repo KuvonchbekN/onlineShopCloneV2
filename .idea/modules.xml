@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/amqp/amqp.iml" filepath="$PROJECT_DIR$/amqp/amqp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apiGW/apiGW.iml" filepath="$PROJECT_DIR$/apiGW/apiGW.iml" />
+      <module fileurl="file://$PROJECT_DIR$/clients/clients.iml" filepath="$PROJECT_DIR$/clients/clients.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eurekaServer/eurekaServer.iml" filepath="$PROJECT_DIR$/eurekaServer/eurekaServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/notification/notification.iml" filepath="$PROJECT_DIR$/notification/notification.iml" />
+      <module fileurl="file://$PROJECT_DIR$/onlineShopCloneV2.iml" filepath="$PROJECT_DIR$/onlineShopCloneV2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/order/order.iml" filepath="$PROJECT_DIR$/order/order.iml" />
+      <module fileurl="file://$PROJECT_DIR$/product/product.iml" filepath="$PROJECT_DIR$/product/product.iml" />
+      <module fileurl="file://$PROJECT_DIR$/session/session.iml" filepath="$PROJECT_DIR$/session/session.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user/user.iml" filepath="$PROJECT_DIR$/user/user.iml" />
+    </modules>
+  </component>
+</project>
