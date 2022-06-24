@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.exadel.amqp.RabbitMQMessageProducer;
-import uz.exadel.clients.notification.NotificationRequest;
 import uz.exadel.clients.session.SessionClient;
 import uz.exadel.clients.session.ShoppingSessionDto;
 import uz.exadel.user.dto.UserDto;

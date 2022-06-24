@@ -78,6 +78,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>apiGW</finalName>
     </build>
 
 </project>
