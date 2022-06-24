@@ -3,9 +3,8 @@ package uz.exadel.user.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uz.exadel.amqp.RabbitMQMessageProducer;
-import uz.exadel.clients.session.SessionClient;
-import uz.exadel.clients.session.ShoppingSessionDto;
+import uz.exadel.user.clients.session.SessionClient;
+import uz.exadel.user.clients.session.ShoppingSessionDto;
 import uz.exadel.user.dto.UserDto;
 import uz.exadel.user.entity.User;
 import uz.exadel.user.exception.UserAlreadyExistsException;
@@ -25,7 +24,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RabbitMQMessageProducer rabbitMQMessageProducer;
+//    private final RabbitMQMessageProducer rabbitMQMessageProducer;
     private final UserMapper userMapper;
     private final EmailServiceImpl emailService;
     private final SessionClient sessionClient;

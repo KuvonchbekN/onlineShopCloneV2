@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uz.exadel.clients.session.ResponseItem;
 import uz.exadel.order.dto.OrderCartDto;
+import uz.exadel.order.dto.ResponseItem;
 import uz.exadel.order.service.OrderService;
 
 @RestController

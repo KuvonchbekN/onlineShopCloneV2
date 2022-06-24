@@ -12,6 +12,8 @@
         <option value="$PROJECT_DIR$/session/pom.xml" />
         <option value="$PROJECT_DIR$/notification/pom.xml" />
         <option value="$PROJECT_DIR$/clients/pom.xml" />
+        <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/telegram-webhook/pom.xml" />
       </list>
     </option>
   </component>

@@ -16,7 +16,7 @@ public class OrderItemDto {
     @JsonProperty("product_id")
     private String productId;
 
-    @JsonProperty("product_quantity")
+    @JsonProperty("quantity")
     private int productQuantity;
 
     private BigDecimal price;

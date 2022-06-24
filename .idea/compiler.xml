@@ -7,39 +7,42 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="apiGW" />
         <module name="notification" />
+        <module name="apigw" />
         <module name="product" />
         <module name="clients" />
+        <module name="telegram-webhook" />
         <module name="amqp" />
         <module name="session" />
-        <module name="eurekaServer" />
         <module name="user" />
+        <module name="eureka-server" />
         <module name="order" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="amqp" target="11" />
-      <module name="apiGW" target="11" />
+      <module name="apigw" target="11" />
       <module name="clients" target="11" />
-      <module name="eurekaServer" target="11" />
+      <module name="eureka-server" target="11" />
       <module name="notification" target="11" />
       <module name="order" target="11" />
       <module name="product" target="11" />
       <module name="session" target="11" />
+      <module name="telegram-webhook" target="11" />
       <module name="user" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="amqp" options="-parameters" />
-      <module name="apiGW" options="-parameters" />
+      <module name="apigw" options="-parameters" />
       <module name="clients" options="-parameters" />
-      <module name="eurekaServer" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
       <module name="notification" options="-parameters" />
       <module name="order" options="-parameters" />
       <module name="product" options="-parameters" />
       <module name="session" options="-parameters" />
+      <module name="telegram-webhook" options="-parameters" />
       <module name="user" options="-parameters" />
     </option>
   </component>

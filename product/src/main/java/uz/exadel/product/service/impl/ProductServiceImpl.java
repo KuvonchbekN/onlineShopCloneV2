@@ -3,7 +3,6 @@ package uz.exadel.product.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uz.exadel.clients.product.OrderItemDto;
 import uz.exadel.product.entity.Product;
 import uz.exadel.product.exception.ProductAlreadyExistsException;
 import uz.exadel.product.exception.ProductNotFoundException;
@@ -15,6 +14,7 @@ import uz.exadel.product.service.CategoryService;
 import uz.exadel.product.service.ProductService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -86,30 +86,32 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void checkIfThereIsEnoughProductInWarehouse(List<OrderItemDto> orderItemDtoList) {
-        for (OrderItemDto orderItemDto : orderItemDtoList){
-            int requestedProductQuantity = orderItemDto.getProductQuantity();
+    public void checkIfThereIsEnoughProductInWarehouse(Map<String, Integer> map) {
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()){
+            int requestedProductQuantity = entry.getValue();
+
             int foundQuantity =
-                    productRepo.findProductInformationByProductId(orderItemDto.getProductId());
+                    productRepo.findProductInformationByProductId(entry.getKey());
 
             if (requestedProductQuantity > foundQuantity){
-                String productName  = productRepo.findNameById(orderItemDto.getProductId());
+                String productName  = productRepo.findNameById(entry.getKey());
                 throw new UnsufficientProductException(String.format("There is not requested amount of %s in the warehouse, you can buy at most %s %s currently",productName, foundQuantity, productName));
             }
         }
 
-        boughtProduct(orderItemDtoList); //this method updates the product table;
+        boughtProduct(map); //this method updates the product table;
     }
 
-    public void boughtProduct(List<OrderItemDto> orderItemDtoList){
-        orderItemDtoList.forEach(orderItemDto -> {
-            Optional<Product> byId = productRepo.findById(orderItemDto.getProductId());
-            if (byId.isEmpty()){
-                throw new ProductNotFoundException("Product with this id is not found");
+    public void boughtProduct(Map<String , Integer> map){
+        for (Map.Entry<String, Integer> entry : map.entrySet()){
+            Optional<Product> byId = productRepo.findById(entry.getKey());
+            if(byId.isEmpty()){
+                throw new ProductNotFoundException("Product with this id is not found!");
             }
 
             Product product = byId.get();
-            product.setQuantity(product.getQuantity()- orderItemDto.getProductQuantity());
-        });
+            product.setQuantity(product.getQuantity() - entry.getValue());
+        }
     }
 }

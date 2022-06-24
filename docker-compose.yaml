@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  zipkin-server:
+    image: openzipkin/zipkin:2.23
+    deploy:
+      resources:
+        limits:
+          memory: 300m
+    ports:
+      - "9411:9411"
+    networks:
+      - online-shop-network
+    environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+    restart: always #Restart if there is a problem starting up
+  online-shop-user:
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    image: kuvonchn/user-user:0.0.1-SNAPSHOT
+    ports:
+      - "8091:8091"
+    networks:
+      - online-shop-network
+
+
+networks:
+  online-shop-network:

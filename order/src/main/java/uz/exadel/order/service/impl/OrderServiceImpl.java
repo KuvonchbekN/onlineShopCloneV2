@@ -3,9 +3,9 @@ package uz.exadel.order.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uz.exadel.clients.product.OrderItemDto;
-import uz.exadel.clients.product.ProductClient;
+import uz.exadel.order.clients.product.ProductClient;
 import uz.exadel.order.dto.OrderCartDto;
+import uz.exadel.order.dto.OrderItemDto;
 import uz.exadel.order.entity.OrderDetail;
 import uz.exadel.order.entity.OrderItem;
 import uz.exadel.order.entity.PaymentDetail;
@@ -17,7 +17,9 @@ import uz.exadel.order.service.OrderService;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -35,9 +37,17 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItemDto> orderedItemsDto =
                 orderCartDto.getOrderedItemsDto();
 
+        Map<String, Integer> map = new HashMap<>();
+
+        orderedItemsDto.forEach(orderItemDto -> map.put(orderItemDto.getProductId(), orderItemDto.getProductQuantity()));
+
+
+
         String userId = orderCartDto.getUserId();
 
-        productClient.isThereEnoughProductInWarehouse(orderedItemsDto); //this updates product table
+
+
+        productClient.isThereEnoughProductInWarehouse(map); //this updates product table
 
 
         BigDecimal totalPrice = calculateTotalPrice(orderedItemsDto);

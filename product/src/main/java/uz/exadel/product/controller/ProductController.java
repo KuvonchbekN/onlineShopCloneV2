@@ -3,12 +3,11 @@ package uz.exadel.product.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.exadel.clients.product.OrderItemDto;
 import uz.exadel.product.entity.Product;
 import uz.exadel.product.payload.ProductDto;
 import uz.exadel.product.service.ProductService;
 
-import java.util.List;
+import java.util.Map;
 
 
 @RequestMapping("/api/product")
@@ -49,8 +48,8 @@ public class ProductController {
 
     //for feign client
     @PostMapping("/checkSufficiency")
-    public void isThereEnoughProductInWarehouse(@RequestBody List<OrderItemDto> orderItemDtoList){
-        productService.checkIfThereIsEnoughProductInWarehouse(orderItemDtoList);
+    public void isThereEnoughProductInWarehouse(@RequestBody Map<String, Integer> map){
+        productService.checkIfThereIsEnoughProductInWarehouse(map);
     }
 
 

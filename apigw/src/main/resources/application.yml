@@ -15,11 +15,11 @@ spring:
           predicates:
             - Path=/api/category/**
         - id: user
-          uri: http://localhost:8080
+          uri: http://localhost:8091
           predicates:
             - Path=/api/user/**
         - id: notification
-          uri: http://localhost:8082
+          uri: http://localhost:8083
           predicates:
             - Path=/api/notification/**
         - id: order

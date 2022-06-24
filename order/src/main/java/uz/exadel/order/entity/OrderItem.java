@@ -26,7 +26,7 @@ public class OrderItem {
     @JoinColumn(name = "order_detail_id", nullable = false)
     private OrderDetail orderDetail;
 
-    @Column(name = "product_id", nullable = false,unique = true)
+    @Column(name = "product_id", nullable = false)
     private String productId;
 
     @Column(name = "product_quantity")
