@@ -13,8 +13,8 @@
         <module name="clients" />
         <module name="amqp" />
         <module name="session" />
-        <module name="eurekaServer" />
         <module name="user" />
+        <module name="eurekaServer" />
         <module name="order" />
       </profile>
     </annotationProcessing>
