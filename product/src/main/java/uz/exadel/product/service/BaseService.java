@@ -1,6 +1,7 @@
 package uz.exadel.product.service;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BaseService<R, T> {
     List<T> getAll();

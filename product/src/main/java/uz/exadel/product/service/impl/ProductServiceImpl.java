@@ -33,9 +33,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getById(String productId) {
-        checkById(productId);
         Optional<Product> byId = productRepo.findById(productId);
-        if (byId.isEmpty()) throw new ProductNotFoundException("Product not found!");
+        if (byId.isEmpty()) {
+            throw new ProductNotFoundException("Product not found!");
+        }
         return byId.get();
     }
 

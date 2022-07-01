@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
         checkById(categoryId);
         Optional<Category> byId = categoryRepo.findById(categoryId);
         if (byId.isEmpty()){
-            throw new CategoryNotFoundException("Category not found!");
+            throw new CategoryNotFoundException(String.format("Category with id of %s is not found!", categoryId));
         }
         return byId.get();
     }
