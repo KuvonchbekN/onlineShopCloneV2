@@ -17,7 +17,9 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString
+
 public class Category  {
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
