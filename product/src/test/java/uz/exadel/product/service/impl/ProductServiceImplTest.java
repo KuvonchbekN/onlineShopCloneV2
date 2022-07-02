@@ -1,6 +1,7 @@
 package uz.exadel.product.service.impl;
 
 import org.antlr.stringtemplate.language.Cat;
+import org.checkerframework.checker.nullness.Opt;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,9 +18,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import uz.exadel.clients.product.OrderItemDto;
 import uz.exadel.product.entity.Category;
 import uz.exadel.product.entity.Product;
+import uz.exadel.product.exception.CategoryNotFoundException;
 import uz.exadel.product.exception.ProductNotFoundException;
+import uz.exadel.product.exception.UnsufficientProductException;
 import uz.exadel.product.mappers.CategoryMapperImpl;
 import uz.exadel.product.mappers.CustomMapper;
 import uz.exadel.product.mappers.ProductMapperImpl;
@@ -52,42 +56,48 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
 
-//    @Mock
-//    private CategoryRepo categoryRepo;
+    @Mock
+    private CategoryRepo categoryRepo;
 
-//    @Autowired
-//    private CustomMapper<Category, CategoryDto> categoryMapper = new CategoryMapperImpl();
+    @Mock
+    private CustomMapper<Product, ProductDto> productMapper = new ProductMapperImpl(categoryRepo);
 
-    @MockBean(name = "categoryServiceImpl")
+    @Mock
     private CategoryServiceImpl categoryService ;
 
-    @Mock(name = "productRepo")
+    @Mock
     private ProductRepo productRepo;
     @InjectMocks
     private ProductServiceImpl productService;
 
-
-    @Mock
-    private ProductMapperImpl productMapper;
-
-
-
-
     private Product product;
+    private ProductDto productDto;
+    private Category category;
+    private OrderItemDto orderItemDto;
+    private OrderItemDto orderItemDto2;
+    private OrderItemDto orderItemDto3;
+    private OrderItemDto orderItemDto4;
 
     @BeforeEach
     void setUp() {
-        Category category = new Category("1", "aaa", "aaa", null, Timestamp.valueOf(LocalDateTime.now()));
+        category = new Category("1", "aaa", "aaa", null, Timestamp.valueOf(LocalDateTime.now()));
         product = new Product("1", "aaa", "aaa", "aaa", "aaa", "aaa", 10, category, BigDecimal.valueOf(10), 10, Timestamp.valueOf(LocalDateTime.now()));
+        productDto = new ProductDto(product.getName(), product.getDescription(),product.getManufacturer(),product.getUnit(),product.getSKU(),product.getPrice(),product.getQuantity(),product.getDiscount(),category.getId());
+        orderItemDto = new OrderItemDto(product.getId(), 11, BigDecimal.valueOf(500));
+        orderItemDto4 = new OrderItemDto(product.getId(), 5, BigDecimal.valueOf(500));
+        orderItemDto3 = new OrderItemDto(product.getId(), 3, BigDecimal.valueOf(500));
+        orderItemDto2 = new OrderItemDto(product.getId(), 10, BigDecimal.valueOf(600));
     }
 
     @DisplayName(value = "Adding New Product")
     @Test
      void create() {
         lenient().when(productRepo.save(any(Product.class))).thenReturn(product);
-        ProductDto productDto = new ProductDto(product.getName(), product.getDescription(),
-                product.getManufacturer(), product.getUnit(), product.getSKU(), product.getPrice(),
-                product.getQuantity(), product.getDiscount(),product.getCategory().getId());
+        lenient().when(productMapper.dtoToObject(any(ProductDto.class))).thenReturn(product);
+        lenient().when(productMapper.objectToDto(any(Product.class))).thenReturn(productDto);
+
+        ProductDto productDto = productMapper.objectToDto(product);
+
         String id = productService.create(productDto);
 
         assertEquals(id, "1");
@@ -101,7 +111,8 @@ class ProductServiceImplTest {
 
     @Test
     void getByIdWithWrongProductId() {
-        ProductNotFoundException productNotFoundException = assertThrows(ProductNotFoundException.class, () -> productService.checkById(null));
+        ProductNotFoundException productNotFoundException = assertThrows(ProductNotFoundException.class,
+                () -> productService.checkById(null));
         assertTrue(productNotFoundException.getMessage().contains("should not be null"));
     }
 
@@ -128,33 +139,66 @@ class ProductServiceImplTest {
         assertThat(byId).isNotNull();
     }
 
-
-
     @Test
     void update() {
+        Product product1 = new Product("1", "bbb", "bbb", "bbb", "bbb", "bbb", 20,category , BigDecimal.valueOf(20), 5, Timestamp.valueOf(LocalDateTime.now()));
+        lenient().when(productRepo.save(any(Product.class))).thenReturn(product1);
+        lenient().when(productMapper.dtoToObject(any(ProductDto.class))).thenReturn(product);
+        lenient().when(productMapper.objectToDto(any(Product.class))).thenReturn(productDto);
+        lenient().when(productRepo.existsById("1")).thenReturn(true);
+
+        ProductDto productDto1 = new ProductDto("bbb","bbb","bbb","bbb","bbb",BigDecimal.valueOf(20),20,5,product.getCategory().getId());
+
+        String update = productService.update(productDto1, product.getId());
+        assertEquals(update, "1");
     }
 
     @Test
     void delete() {
+        doNothing().when(productRepo).deleteById("1");
+        when(productRepo.existsById("1")).thenReturn(true);
+        productService.delete("1");
+        verify(productRepo, times(1)).deleteById("1");
     }
 
+
     @Test
-    void checkById() {
-//        String id = "cat1";
-//
-//        willDoNothing().given(categoryRepo).deleteById(id);
-//        when(categoryRepo.existsById("cat1")).thenReturn(true);
-//
-//        productService.delete(id);
-//
-//        verify(categoryRepo, times(1)).deleteById(id);
+    void checkById_throwException() {
+        when(productRepo.existsById("someId")).thenReturn(false);
+        ProductNotFoundException exception = assertThrows(ProductNotFoundException.class,
+                () -> productService.checkById("someId"));
+        assertTrue(exception.getMessage().contains("not found"));
     }
 
     @Test
     void checkIfThereIsEnoughProductInWarehouse() {
+        List<OrderItemDto> list = new ArrayList<>(List.of(orderItemDto, orderItemDto2));
+        lenient().when(productRepo.findProductInformationByProductId(product.getId())).thenReturn(product.getQuantity());
+        lenient().when(productRepo.findNameById(product.getId())).thenReturn(product.getName());
+        lenient().when(productRepo.findById(product.getId())).thenReturn(Optional.of(product));
+
+        UnsufficientProductException unsufficientProductException = assertThrows(UnsufficientProductException.class,
+                () -> productService.checkIfThereIsEnoughProductInWarehouse(list));
+        assertTrue(unsufficientProductException.getMessage().contains("not requested amount"));
     }
 
     @Test
-    void boughtProduct() {
+    void boughtProduct_successfully() {
+        List<OrderItemDto> list = new ArrayList<>(List.of(orderItemDto3, orderItemDto4));
+        lenient().when(productRepo.findById("1")).thenReturn(Optional.of(product));
+
+        productService.boughtProduct(list);
+
+        assertEquals(product.getQuantity(), 2);
+    }
+
+    @Test
+    void boughtProduct_couldNotFindProduct() {
+        List<OrderItemDto> list = new ArrayList<>(List.of(orderItemDto3, orderItemDto4));
+        lenient().when(productRepo.findById("1")).thenReturn(Optional.empty());
+
+        ProductNotFoundException productNotFoundException = assertThrows(ProductNotFoundException.class, () -> productService.boughtProduct(list));
+
+        assertTrue(productNotFoundException.getMessage().contains("not found"));
     }
 }

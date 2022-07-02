@@ -1,5 +1,6 @@
 package uz.exadel.product.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +42,7 @@ class CategoryServiceImplTest {
     @Mock
     private CategoryRepo categoryRepo;
 
-    @Autowired
+
     private CustomMapper<Category, CategoryDto> categoryMapper = new CategoryMapperImpl();
 
 

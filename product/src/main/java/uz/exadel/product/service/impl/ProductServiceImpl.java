@@ -44,7 +44,6 @@ public class ProductServiceImpl implements ProductService {
     public String create(ProductDto productDto) {
         checkBySku(productDto.getSKU()); //checks by product sku
         categoryService.getById(productDto.getCategoryId()); //checks by category id
-
         Product product = productMapper.dtoToObject(productDto);
         Product savedProduct = productRepo.save(product);
         return savedProduct.getId();
@@ -55,11 +54,9 @@ public class ProductServiceImpl implements ProductService {
         checkBySku(productDto.getSKU()); //checks by product sku
         checkById(productId);
         categoryService.checkById(productDto.getCategoryId());//checks by category id
-
         Product product = productMapper.dtoToObject(productDto);
         product.setId(productId);
         Product updatedProduct = productRepo.save(product);
-
         return updatedProduct.getId();
     }
 
@@ -69,48 +66,46 @@ public class ProductServiceImpl implements ProductService {
         productRepo.deleteById(productId);
     }
 
-    private void checkBySku(String sku){
+    private void checkBySku(String sku) {
         boolean exists = productRepo.existsBySKU(sku);
         if (exists) {
             throw new ProductAlreadyExistsException(String.format("Product with SKU %s already exists!", sku));
         }
     }
 
-    public void checkById(String productId){
-        if (productId == null){
+    public void checkById(String productId) {
+        if (productId == null) {
             throw new ProductNotFoundException("The product id should not be null!");
         }
         boolean exists = productRepo.existsById(productId);
-        if (!exists){
+        if (!exists) {
             throw new ProductNotFoundException(String.format("Product with id %s is not found!", productId));
         }
     }
 
     @Override
     public void checkIfThereIsEnoughProductInWarehouse(List<OrderItemDto> orderItemDtoList) {
-        for (OrderItemDto orderItemDto : orderItemDtoList){
+        for (OrderItemDto orderItemDto : orderItemDtoList) {
             int requestedProductQuantity = orderItemDto.getProductQuantity();
-            int foundQuantity =
-                    productRepo.findProductInformationByProductId(orderItemDto.getProductId());
+            int foundQuantity = productRepo.findProductInformationByProductId(orderItemDto.getProductId());
 
-            if (requestedProductQuantity > foundQuantity){
-                String productName  = productRepo.findNameById(orderItemDto.getProductId());
-                throw new UnsufficientProductException(String.format("There is not requested amount of %s in the warehouse, you can buy at most %s %s currently",productName, foundQuantity, productName));
+            if (requestedProductQuantity > foundQuantity) {
+                String productName = productRepo.findNameById(orderItemDto.getProductId());
+                throw new UnsufficientProductException(String.format("There is not requested amount of %s in the warehouse, you can buy at most %s %s currently", productName, foundQuantity, productName));
             }
         }
-
         boughtProduct(orderItemDtoList); //this method updates the product table;
     }
 
-    public void boughtProduct(List<OrderItemDto> orderItemDtoList){
+    public void boughtProduct(List<OrderItemDto> orderItemDtoList) {
         orderItemDtoList.forEach(orderItemDto -> {
             Optional<Product> byId = productRepo.findById(orderItemDto.getProductId());
-            if (byId.isEmpty()){
+            if (byId.isEmpty()) {
                 throw new ProductNotFoundException("Product with this id is not found");
             }
 
             Product product = byId.get();
-            product.setQuantity(product.getQuantity()- orderItemDto.getProductQuantity());
+            product.setQuantity(product.getQuantity() - orderItemDto.getProductQuantity());
         });
     }
 }
