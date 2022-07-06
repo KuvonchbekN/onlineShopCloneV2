@@ -1,6 +1,7 @@
 package uz.exadel.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -120,8 +121,8 @@ class CategoryControllerTest {
 
     }
 
-//    @AfterEach
-//    void tearDown() {
-//        categoryRepo.deleteAll();
-//    }
+    @AfterEach
+    void tearDown() {
+        categoryRepo.deleteAll();
+    }
 }
