@@ -44,8 +44,6 @@ class CategoryServiceImplTest {
 
 
     private CustomMapper<Category, CategoryDto> categoryMapper = new CategoryMapperImpl();
-
-
     @InjectMocks
     private CategoryService categoryService = new CategoryServiceImpl(categoryRepo, categoryMapper);
 

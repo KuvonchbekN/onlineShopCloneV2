@@ -30,14 +30,14 @@ public class CategoryController {
 
     @GetMapping("/{categoryId}")
     public ResponseEntity<?> getCategoryById(@PathVariable String categoryId) {
-        Category categoryDto = categoryService.getById(categoryId);
-        return ResponseEntity.ok(new ResponseItem("Single category", categoryDto));
+        Category category = categoryService.getById(categoryId);
+        return ResponseEntity.ok(new ResponseItem("Single category", category));
     }
 
     @PutMapping("/{categoryId}")
     public ResponseEntity<?> updateCategory(@PathVariable String categoryId, @RequestBody CategoryDto categoryDto) {
-        String updatedCategory = categoryService.update(categoryDto, categoryId);
-        return ResponseEntity.ok(new ResponseItem("Updated Category id", updatedCategory));
+        String updatedCategoryId = categoryService.update(categoryDto, categoryId);
+        return ResponseEntity.ok(new ResponseItem("Updated Category id", updatedCategoryId));
     }
 
     @DeleteMapping("/{categoryId}")
