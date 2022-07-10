@@ -10,7 +10,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @SpringBootApplication
 @EnableAspectJAutoProxy
 @EnableEurekaClient
-@EnableFeignClients(basePackages = "uz.exadel.clients")
+@EnableFeignClients(basePackages = "uz.exadel.product")
 @ComponentScan("uz.exadel.product.*")
 public class ProductApplication {
 

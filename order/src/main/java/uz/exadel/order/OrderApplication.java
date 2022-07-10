@@ -10,7 +10,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableEurekaClient
 @EnableAspectJAutoProxy
 @EnableFeignClients(
-        basePackages = "uz.exadel.clients"
+        basePackages = "uz.exadel.order"
 )
 public class OrderApplication {
 

@@ -55,7 +55,7 @@ class CategoryControllerTest {
 
     @BeforeEach
     void setUp() {
-        categoryDto = new CategoryDto("Phones", "Phones section");
+        categoryDto = new CategoryDto("Phones2", "Phones section");
         category = new Category("1", "Phones", "This section belongs to the phones", null, Timestamp.valueOf(LocalDateTime.now()));
     }
 

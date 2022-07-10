@@ -1,8 +1,9 @@
-package uz.exadel.clients.product;
+package uz.exadel.order.productClient;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import uz.exadel.order.dto.OrderItemDto;
 
 import java.util.List;
 

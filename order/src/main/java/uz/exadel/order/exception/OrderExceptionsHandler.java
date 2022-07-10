@@ -1,4 +1,4 @@
-package uz.exadel.product.exception;
+package uz.exadel.order.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -17,8 +17,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Objects;
 
 @RestControllerAdvice
-@Slf4j(topic = "PRODUCT_EXCEPTION_HANDLER")
-public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
+@Slf4j(topic = "ORDER_EXCEPTION_HANDLER")
+public class OrderExceptionsHandler extends ResponseEntityExceptionHandler {
 
     public static final String TRACE = "trace";
 
@@ -83,46 +83,10 @@ public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-
-
-    @ExceptionHandler(ProductNotFoundException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException productNotFoundException, WebRequest request) {
-        log.error("Product not found exception :)");
-        return buildErrorResponse(productNotFoundException, HttpStatus.NOT_FOUND, request);
-    }
-
     @ExceptionHandler(UnsufficientProductException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleProductNotSufficientException(UnsufficientProductException unsufficientProductException, WebRequest request) {
         log.error("Product amount is not sufficient in warehouse :)");
         return buildErrorResponse(unsufficientProductException, HttpStatus.BAD_REQUEST, request);
     }
-
-
-
-    @ExceptionHandler(ProductAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseEntity<Object> handleProductAlreadyExistsException(ProductAlreadyExistsException productAlreadyExistsException, WebRequest request){
-        log.error("Product already exists exception :)");
-        return buildErrorResponse(productAlreadyExistsException, HttpStatus.CONFLICT,request);
-    }
-
-    @ExceptionHandler(CategoryNotFoundException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ResponseEntity<Object> handleCategoryNotFoundException(CategoryNotFoundException categoryNotFoundException, WebRequest request) {
-        log.error("Category not found exception :)");
-        return buildErrorResponse(categoryNotFoundException, HttpStatus.NOT_FOUND, request);
-    }
-
-
-
-    @ExceptionHandler(CategoryAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseEntity<Object> handleCategoryAlreadyExistsException(CategoryAlreadyExistsException categoryAlreadyExistsException, WebRequest request){
-        log.error("Category already exists exception :)");
-        return buildErrorResponse(categoryAlreadyExistsException, HttpStatus.CONFLICT,request);
-    }
 }
-
-

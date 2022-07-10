@@ -1,4 +1,4 @@
-package uz.exadel.clients.product;
+package uz.exadel.user.clients.session;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -12,13 +12,11 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderItemDto {
-    @JsonProperty("product_id")
-    private String productId;
+public class ShoppingSessionDto {
 
-    @JsonProperty("product_quantity")
-    private int productQuantity;
+    @JsonProperty("user_id")
+    private String userId;
 
-    private BigDecimal price;
+    @JsonProperty(value = "total_amount")
+    private BigDecimal totalAmount;
 }
-

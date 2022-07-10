@@ -3,12 +3,13 @@ package uz.exadel.order.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uz.exadel.clients.product.OrderItemDto;
-import uz.exadel.clients.product.ProductClient;
 import uz.exadel.order.dto.OrderCartDto;
+import uz.exadel.order.dto.OrderItemDto;
 import uz.exadel.order.entity.OrderDetail;
 import uz.exadel.order.entity.OrderItem;
 import uz.exadel.order.entity.PaymentDetail;
+import uz.exadel.order.exception.UnsufficientProductException;
+import uz.exadel.order.productClient.ProductClient;
 import uz.exadel.order.repo.OrderDetailRepo;
 import uz.exadel.order.repo.OrderItemRepo;
 import uz.exadel.order.repo.PaymentDetailRepo;
@@ -37,7 +38,11 @@ public class OrderServiceImpl implements OrderService {
 
         String userId = orderCartDto.getUserId();
 
-        productClient.isThereEnoughProductInWarehouse(orderedItemsDto); //this updates product table
+        try {
+            productClient.isThereEnoughProductInWarehouse(orderedItemsDto); //this updates product table
+        }catch (Exception e){
+            throw new UnsufficientProductException("Requested product amount in warehouse is not sufficient");
+        }
 
 
         BigDecimal totalPrice = calculateTotalPrice(orderedItemsDto);
