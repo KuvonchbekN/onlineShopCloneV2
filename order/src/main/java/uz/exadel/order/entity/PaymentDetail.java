@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class PaymentDetail {
-    //TODO base abstract classni ham ob cqwm kerak. Id, createdAt fieldlari ucun
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")

@@ -33,9 +33,9 @@ public class CartServiceImpl implements CartService {
                 .createdAt(Timestamp.valueOf(LocalDateTime.now()))
                 .productId(cartItemDto.getProductId())
                 .build();
-        cartItemRepo.save(cartItem);
+        CartItem save = cartItemRepo.save(cartItem);
 
-        return cartItem.getId();
+        return save.getId();
     }
 
     @Override
@@ -65,6 +65,7 @@ public class CartServiceImpl implements CartService {
         cartItem.setQuantity(cartItemDto.getQuantity());
         cartItem.setProductId(cartItemDto.getProductId());
         cartItem.setShoppingSession(session);
+        cartItemRepo.save(cartItem);
     }
 
     @Override

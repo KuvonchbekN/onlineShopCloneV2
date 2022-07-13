@@ -10,7 +10,7 @@ import uz.exadel.amqp.AmqpApplication;
         UserApplication.class,
         AmqpApplication.class
 })
-@EnableFeignClients(basePackages = "uz.exadel.clients")
+@EnableFeignClients(basePackages = "uz.exadel.user")
 @EnableEurekaClient
 public class UserApplication {
 

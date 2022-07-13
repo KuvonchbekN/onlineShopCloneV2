@@ -1,12 +1,13 @@
 package uz.exadel.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.exadel.amqp.RabbitMQMessageProducer;
-import uz.exadel.clients.notification.NotificationRequest;
-import uz.exadel.clients.session.SessionClient;
-import uz.exadel.clients.session.ShoppingSessionDto;
+import uz.exadel.user.clients.notification.NotificationRequest;
+import uz.exadel.user.clients.session.SessionClient;
+import uz.exadel.user.clients.session.ShoppingSessionDto;
 import uz.exadel.user.dto.UserDto;
 import uz.exadel.user.entity.User;
 import uz.exadel.user.exception.UserAlreadyExistsException;
@@ -39,18 +40,18 @@ public class UserServiceImpl implements UserService {
         String userId = checkUserEmail(user);
         user.setId(userId);
 
-//        NotificationRequest notificationRequest = new NotificationRequest(
-//                user.getId(),
-//                user.getEmail(),
-//                String.format("Hi %s, welcome to online shop website... ", user.getFullName())
-//        );
-//
-//
-//        rabbitMQMessageProducer.publish(
-//                notificationRequest,
-//                "internal.exchange",
-//                "internal.notification.routing-key"
-//        );
+        NotificationRequest notificationRequest = new NotificationRequest(
+                user.getId(),
+                user.getEmail(),
+                String.format("Hi %s, welcome to online shop website... ", user.getFullName())
+        );
+
+
+        rabbitMQMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key"
+        );
 
         ShoppingSessionDto shoppingSessionDto =
                 new ShoppingSessionDto(userId, BigDecimal.valueOf(0));

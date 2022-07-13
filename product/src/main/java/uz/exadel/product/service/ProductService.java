@@ -1,7 +1,7 @@
 package uz.exadel.product.service;
 
 import org.springframework.stereotype.Service;
-import uz.exadel.clients.product.OrderItemDto;
+import uz.exadel.product.clientDto.OrderItemDto;
 import uz.exadel.product.entity.Product;
 import uz.exadel.product.payload.ProductDto;
 

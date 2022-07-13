@@ -26,18 +26,18 @@ public class CartController {
     @GetMapping
     public ResponseEntity<?> getCartList(){
         List<CartItem> list = cartService.getList();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(new ResponseItem("CartItem List", list));
     }
 
     @GetMapping("/sessionCarts/{sessionId}")
     public ResponseEntity<?> getSessionCartsList(@PathVariable String sessionId){
-        return ResponseEntity.ok(cartService.getCartItemListBySessionId(sessionId));
+        return ResponseEntity.ok(new ResponseItem("Specific Session Id", cartService.getCartItemListBySessionId(sessionId)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCartById(@PathVariable String id){
         CartItem byId = cartService.getById(id);
-        return ResponseEntity.ok(byId);
+        return ResponseEntity.ok(new ResponseItem("Cart by Id", byId));
     }
 
     @PutMapping("/{id}")
