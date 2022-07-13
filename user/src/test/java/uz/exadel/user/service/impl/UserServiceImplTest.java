@@ -16,12 +16,9 @@ import uz.exadel.user.clients.session.ShoppingSessionDto;
 import uz.exadel.user.dto.UserDto;
 import uz.exadel.user.entity.User;
 import uz.exadel.user.exception.UserNotFoundException;
-import uz.exadel.user.mapper.UserMapper;
 import uz.exadel.user.mapper.UserMapperImpl;
 import uz.exadel.user.repository.UserRepository;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

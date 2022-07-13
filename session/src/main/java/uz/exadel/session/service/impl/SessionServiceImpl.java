@@ -1,6 +1,7 @@
 package uz.exadel.session.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.exadel.session.entity.ShoppingSession;
@@ -9,6 +10,8 @@ import uz.exadel.session.payload.ShoppingSessionDto;
 import uz.exadel.session.repo.SessionRepo;
 import uz.exadel.session.service.SessionService;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,21 +20,18 @@ import java.util.Optional;
 @Transactional
 public class SessionServiceImpl implements SessionService {
 
+
     private final SessionRepo sessionRepo;
 
-    //TODO here I need to make jar of common classes such as mapStruct, ResponseItem, and if possible BaseService which was used in product microservice as well
     @Override
     public String create(ShoppingSessionDto shoppingSessionDto) {
-        ShoppingSession shoppingSession = ShoppingSession.builder()
-                .userId(shoppingSessionDto.getUserId())
-                .totalAmount(shoppingSessionDto.getTotalAmount())
-                .build();
-        sessionRepo.save(shoppingSession);
-        return shoppingSession.getId();
+        ShoppingSession shoppingSession = new ShoppingSession(null, shoppingSessionDto.getUserId(), shoppingSessionDto.getTotalAmount(),null, Timestamp.valueOf(LocalDateTime.now()));
+        ShoppingSession save = sessionRepo.save(shoppingSession);
+        return save.getId();
     }
 
     @Override
-    public ShoppingSession getShoppingSessionByUserId(String userId) {
+    public ShoppingSession  getShoppingSessionByUserId(String userId) {
         Optional<ShoppingSession> byUserId = sessionRepo.findByUserId(userId);
         if (byUserId.isEmpty()){
             throw new SessionNotFoundException("Session for current User is not found");
@@ -60,7 +60,7 @@ public class SessionServiceImpl implements SessionService {
         ShoppingSession shoppingSession = byId.get();
 
         shoppingSession.setTotalAmount(shoppingSessionDto.getTotalAmount());
-        //TODO let's see whether data will get updated even if I don't save it
+        sessionRepo.save(shoppingSession);
     }
 
     @Override

@@ -25,19 +25,19 @@ public class SessionController {
     @GetMapping
     public ResponseEntity<?> getSessionList(){
         List<ShoppingSession> list = sessionService.getList();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(new ResponseItem("Session list", list));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getSessionById(@PathVariable String id){
         ShoppingSession byId = sessionService.getById(id);
-        return ResponseEntity.ok(byId);
+        return ResponseEntity.ok(new ResponseItem("Single Session", byId));
     }
 
     @GetMapping("/userId/{userId}")
     public ResponseEntity<?> getSessionByUserId(@PathVariable String userId){
         ShoppingSession shoppingSessionByUserId = sessionService.getShoppingSessionByUserId(userId);
-        return ResponseEntity.ok(shoppingSessionByUserId);
+        return ResponseEntity.ok(new ResponseItem("Session of Specific User", shoppingSessionByUserId));
     }
 
     @PutMapping("/{id}")
