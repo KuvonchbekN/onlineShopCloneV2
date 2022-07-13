@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
         ShoppingSessionDto shoppingSessionDto =
                 new ShoppingSessionDto(userId, BigDecimal.valueOf(0));
-        sessionClient.createSession(shoppingSessionDto);
+        ResponseEntity<?> session = sessionClient.createSession(shoppingSessionDto);
 
         return user.getId();
     }
